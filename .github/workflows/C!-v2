@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install build dependencies
+        run: >-
+          sudo apt-get update && sudo apt-get install -y build-essential cmake ninja-build pkg-config
+          ncurses-dev libreadline-dev libedit-dev
+          libgoogle-perftools-dev libunwind-dev
+          libgmp-dev
+          libssl-dev
+          unixodbc-dev
+          zlib1g-dev libarchive-dev
+          libossp-uuid-dev
+          libxext-dev libice-dev libjpeg-dev libxinerama-dev libxft-dev
+          libxpm-dev libxt-dev
+          libdb-dev
+          libpcre2-dev
+          libyaml-dev
+          default-jdk junit4
+
+      - name: Configure project
+        run: cmake -B build -G Ninja
+
+      - name: Build project
+        run: cmake --build build
+
+      - name: Run tests
+        run: cmake --build build --target test
+        env:
+          CTEST_PARALLEL_LEVEL: 4
+          CTEST_OUTPUT_ON_FAILURE: y
+
+
+#  build
+#  clone of 'https://github.com/drzo/bench.git' into submodule path '/home/runner/work/swipl-devel/swipl-devel/bench' failed
+#  repository 'https://github.com/drzo/distro-debian.git/' not found
+#  clone of 'https://github.com/drzo/distro-debian.git' into submodule path '/home/runner/work/swipl-devel/swipl-devel/debian' failed
+#  repository 'https://github.com/drzo/packages-PDT.git/' not found
+#  clone of 'https://github.com/drzo/packages-PDT.git' into submodule path '/home/runner/work/swipl-devel/swipl-devel/packages/PDT
+#  repository 'https://github.com/drzo/packages-RDF.git/' not found
+#  clone of 'https://github.com/drzo/packages-RDF.git' into submodule path '/home/runner/work/swipl-devel/swipl-devel/packages/RDF' failed
+#  repository 'https://github.com/drzo/packages-archive.git/' not found
+
+#  clone of 'https://github.com/drzo/packages-archive.git' into submodule path '/home/runner/work/swipl-devel/swipl-devel/packages/archive' failed
+
+#  SWI-Prolog/swipl-devel
