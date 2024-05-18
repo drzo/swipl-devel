@@ -46,3 +46,4 @@ jobs:
         env:
           CTEST_PARALLEL_LEVEL: 4
           CTEST_OUTPUT_ON_FAILURE: y
+
